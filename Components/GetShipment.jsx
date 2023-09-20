@@ -1,10 +1,11 @@
 import { useState } from "react";
+
 export default ({ getModel, setGetModel, getShipment }) => {
   const [index, setIndex] = useState(0);
   const [singleShipmentData, setSingleShipmentData] = useState();
 
   const getShipmentData = async () => {
-    const getData = await getShipmentData(index);
+    const getData = await getShipment(index);
     setSingleShipmentData(getData);
     console.log(getData);
   };
@@ -53,9 +54,9 @@ export default ({ getModel, setGetModel, getShipment }) => {
             <h4 className="text-lg font-medium text-gray-800">
               Product Tracking Details
             </h4>
-          </div>
+          
           <form onSubmit={(e) => e.preventDefault()}>
-            <div className="relative mt-3">
+            < div className="relative mt-3">
               <input
                 type="number"
                 placeholder="Id"
@@ -93,7 +94,7 @@ export default ({ getModel, setGetModel, getShipment }) => {
         </div>
       </div>
     </div>
-
+</div>
   ) : (
     ""
   );

@@ -28,7 +28,7 @@ export default () => {
           <div className="space-y-6">
             <img src="https://www.floatui.com/logo.svg" className="w-32" />
             <p className=" mex-w-md">
-              So on this point just add some footer element hehre
+              Welcome to Trace Chain. Here, we help you create and track all your shipments
             </p>
 
             <ul className=" flex-wrap items-center gap-4 text-sm sm:text-base">

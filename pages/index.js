@@ -59,7 +59,7 @@ const index = () => {
 
      <Form
         createShipmentModel={createShipmentModel}
-        createShipmentData={createShipment}
+        createShipmentsData={createShipment}
         setCreateShipmentModel={createShipmentModel}
       />
 

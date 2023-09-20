@@ -73,7 +73,7 @@ export const TrackingProvider = ({ children }) => {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
-      const provider = new ether.providers.JsonRpcProider();
+      const provider = new ethers.providers.JsonRpcProider();
       const contract = fetchContract(provider);
       const shipmentsCount = await contract.getShipmentsCount(accounts[0]);
       return shipmentsCount.toNumber();
