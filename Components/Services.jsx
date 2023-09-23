@@ -51,7 +51,7 @@ export default ({
         <div 
         className="mt-12">
           <ul 
-          className="grid gab-x-8 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          className="grid gab-8 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {team.map((item, i) => (
               <li 
               key={i}>

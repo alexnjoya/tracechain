@@ -132,7 +132,7 @@ contract Tracking {
         address _sender,
         address _reciever,
         uint256 _index
-    ) public {
+    ) public payable {
         Shipment storage shipment = shipments[_sender][_index];
         TyepShipment storage tyepShipment = tyepShipments[_index];
 
@@ -150,7 +150,7 @@ contract Tracking {
 
         uint256 amount = shipment.price;
 
-        payable(shipment.sender).transfer(amount);
+        payable(_reciever).transfer(amount);
 
         shipment.isPaid = true;
         tyepShipment.isPaid = true;

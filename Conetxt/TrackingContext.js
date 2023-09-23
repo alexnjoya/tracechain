@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers"; 
 
+
+
 // internal import
-import tracking from "./Tracking.json";
-const ContractAdddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+import tracking from "../Conetxt/Tracking.json"
+const ContractAdddress = "0x7f5B442bF57A381219F44Ed2458af138E827ae03";
 const ContractABI = tracking.abi;
 
 // fetching the smart contract
-const fetchContract = (signerOrProvider) =>
-  new ethers.Contract(ContractAdddress, ContractABI, signerOrProvider);
+const fetchContract = (signerOrProvider) =>{
+  return new ethers.Contract(ContractAdddress, ContractABI, signerOrProvider);
+}
 
 export const TrackingContext = React.createContext();
 export const TrackingProvider = ({ children }) => {
@@ -49,7 +53,9 @@ export const TrackingProvider = ({ children }) => {
       const provider = new ethers.providers.JsonRpcProvider();
       const contract = fetchContract(provider);
 
-      const shipments = await contract.getAllTransactions();
+      //console.log('contract', contract)
+     //console.log('shipments', shipments)
+     const shipments = await contract.getAllTransactions();
       const allShipments = shipments.map((shipment) => ({
         sender: shipment.sender,
         reciever: shipment.reciever,
@@ -63,7 +69,7 @@ export const TrackingProvider = ({ children }) => {
 
       return allShipments;
     } catch (error) {
-      console.log("erro getting shipment");
+      console.log("error getting shipment");
     }
   };
 
@@ -73,7 +79,7 @@ export const TrackingProvider = ({ children }) => {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
-      const provider = new ethers.providers.JsonRpcProider();
+      const provider = new ethers.providers.JsonRpcProvider();
       const contract = fetchContract(provider);
       const shipmentsCount = await contract.getShipmentsCount(accounts[0]);
       return shipmentsCount.toNumber();
@@ -107,7 +113,7 @@ export const TrackingProvider = ({ children }) => {
         }
       );
 
-      transaction.await();
+      transaction.wait();
       console.log(transaction);
     } catch (error) {
       console.log("wrong complete shipment", error);
@@ -122,7 +128,7 @@ export const TrackingProvider = ({ children }) => {
         method: "eth_accounts",
       });
 
-      const provider = new ethers.provider.JsonRpcProider();
+      const provider = new ethers.providers.JsonRpcProvider();
       const contract = fetchContract(provider);
       const shipment = await contract.getShipment(account[0], index * 1);
 
@@ -130,7 +136,7 @@ export const TrackingProvider = ({ children }) => {
         sender: shipment[0],
         reciever: shipment[1],
         pickupTimeout: shipment[2].toNumber(),
-        deliveryTimeout: shipment[3].toNumber,
+        deliveryTimeout: shipment[3].toNumber(),
         distance: shipment[4].toNumber(),
         price: ethers.utils.formatEther(shipment[5].toString()),
         status: shipment[6],
@@ -162,7 +168,7 @@ export const TrackingProvider = ({ children }) => {
         index * 1
       );
 
-      shipment.await();
+      shipment.wait();
       console.log(shipment);
     } catch (error) {
       console.log("wrong start shipment", error);
@@ -174,10 +180,10 @@ export const TrackingProvider = ({ children }) => {
   const checkIfWalletConnected = async () => {
     try {
       if (!window.ethereum) return "Install MetaMask";
-      const account = await window.ethereum.request({
+      const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
-      if (account.length) {
+      if (accounts.length) {
         setCurrentUser(accounts[0]);
       } else {
         return "no account";
@@ -192,10 +198,10 @@ export const TrackingProvider = ({ children }) => {
   const connectWallet = async () => {
     try {
       if (!window.ethereum) return "Install MetaMask";
-      const account = await window.ethereum.request({
+      const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      setCurrentUser(account[0]);
+      setCurrentUser(accounts[0]);
     } catch (error) {
       return "something went wrong";
     }
@@ -217,6 +223,7 @@ export const TrackingProvider = ({ children }) => {
         getShipmentsCount,
         DappName,
         currentUser,
+        checkIfWalletConnected
       }}
     >
       {children}

@@ -18,7 +18,7 @@ const index = () => {
     currentUser,
     createShipment,
     getAllShipment,
-    CompleteShipement,
+    completeShipment,
     getShipment,
     startShipment,
     getShipmentsCount,
@@ -32,13 +32,13 @@ const index = () => {
   const [getModel, setGetModel] = useState(false);
   // Datat state variables
   const [allShipmentsdata, setallShipmentsdata] = useState();
-  const [getModal, setGetModal] = useState(false); 
 
   useEffect(() => {
     const getCampaignsData = getAllShipment();
 
     return async () => {
-    const allData = await getCampaignsData;
+      const allData = await getCampaignsData;
+      console.log("allData", allData)
       setallShipmentsdata(allData);
     };
   }, []);
@@ -48,7 +48,7 @@ const index = () => {
        <Services
         setOpenProfile={setOpenProfile}
         setCompleteModal={setCompleteModal}
-        setGetModal={setGetModel}
+        setGetModel={setGetModel}
         setStartModal={setStartModal}
       />
 
@@ -59,8 +59,8 @@ const index = () => {
 
      <Form
         createShipmentModel={createShipmentModel}
-        createShipmentsData={createShipment}
-        setCreateShipmentModel={createShipmentModel}
+        createShipment={createShipment}
+        setCreateShipmentModel={setCreateShipmentModel}
       />
 
        <Profile
@@ -73,13 +73,13 @@ const index = () => {
     <CompleteShipment
         completeModal={completeModal}
         setCompleteModal={setCompleteModal}
-        CompleteShipement={CompleteShipement}
+        completeShipment={completeShipment}
       />
 
-       < GetShipment
-        setgetModal={getModal}
-       setGetModal={setGetModal}
-       GetShipment={GetShipment}
+       <GetShipment
+        getModel={getModel}
+       setGetModel={setGetModel}
+       getShipment={getShipment}
       /> 
 
        <StartShipment
