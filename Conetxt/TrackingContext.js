@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 // internal import
 
 import tracking from "../Conetxt/Tracking.json"
-const ContractAdddress = "0x7f5B442bF57A381219F44Ed2458af138E827ae03";
+const ContractAdddress = "0x1E4032dd41Ce197E18d0ACc35B6641009c23dFfD";
 const ContractABI = tracking.abi;
 
 // fetching the smart contract
@@ -53,8 +53,6 @@ export const TrackingProvider = ({ children }) => {
       const provider = new ethers.providers.JsonRpcProvider();
       const contract = fetchContract(provider);
 
-      //console.log('contract', contract)
-     //console.log('shipments', shipments)
      const shipments = await contract.getAllTransactions();
       const allShipments = shipments.map((shipment) => ({
         sender: shipment.sender,
@@ -69,7 +67,7 @@ export const TrackingProvider = ({ children }) => {
 
       return allShipments;
     } catch (error) {
-      console.log("error getting shipment");
+      console.log("error getting shipment", error);
     }
   };
 
@@ -83,8 +81,8 @@ export const TrackingProvider = ({ children }) => {
       const contract = fetchContract(provider);
       const shipmentsCount = await contract.getShipmentsCount(accounts[0]);
       return shipmentsCount.toNumber();
-    } catch (erro) {
-      console.log("erro want,   getting shipment");
+    } catch (error) {
+      console.log("erro getting shipment", error);
     }
   };
 
@@ -144,7 +142,7 @@ export const TrackingProvider = ({ children }) => {
       };
       return singleShipment;
     } catch (error) {
-      console.log("wrong getting shipment");
+      console.log("wrong getting shipment", error);
     }
   };
 

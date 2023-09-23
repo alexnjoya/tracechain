@@ -35,7 +35,6 @@ const index = () => {
 
   useEffect(() => {
     const getCampaignsData = getAllShipment();
-
     return async () => {
       const allData = await getCampaignsData;
       console.log("allData", allData)
