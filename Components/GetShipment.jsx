@@ -4,7 +4,7 @@ export default ({ getModel, setGetModel, getShipment }) => {
   const [index, setIndex] = useState(0);
   const [singleShipmentData, setSingleShipmentData] = useState();
 
-  const getShipmentData = async () => {
+  const getshipmentData = async () => {
     const getData = await getShipment(index);
     setSingleShipmentData(getData);
     console.log(getData);
@@ -13,6 +13,8 @@ export default ({ getModel, setGetModel, getShipment }) => {
 
   const converTime = (time) => {
     const newTime = new Date(time);
+    // console.log("Time ", time);
+    // console.log("New Time ", newTime);
     const dataTime = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "2-digit",
@@ -72,7 +74,7 @@ export default ({ getModel, setGetModel, getShipment }) => {
             </div>
             <button
             
-              onClick={() => getShipmentData()}
+              onClick={() => getshipmentData()}
               className="block w-full mt-3 py-3 px-4 font-medium text-sm text-center
                   text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700
                   rounded-lg ring-offset- 2 ring-indigo-600 focus:ring-2">
@@ -84,9 +86,9 @@ export default ({ getModel, setGetModel, getShipment }) => {
           ) : (
             <div className="text-left">
               <p>Sender: {singleShipmentData.sender.slice(0, 25)}...</p>
-              <p>Recevier: {singleShipmentData.reciever.slice(0, 25)}...</p>
+              <p>Receiver: {singleShipmentData.receiver.slice(0, 25)}...</p>
               <p>PickUpTime: {converTime(singleShipmentData.pickupTime)}</p>
-              <p>DeliveryTime: {converTime(singleShipmentData.DeliveryTime)}</p>
+              <p>DeliveryTime: {converTime(singleShipmentData.deliveryTime)}</p>
               <p>Distance: {singleShipmentData.distance}</p>
               <p>Price: {singleShipmentData.price}</p>
               <p>Status: {singleShipmentData.status}</p>

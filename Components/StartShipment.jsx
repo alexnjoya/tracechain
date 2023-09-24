@@ -67,7 +67,7 @@ export default({ startModal, setStartModal, startShipment }) => {
                   outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                   onChange={(e) => setGetProduct({
                     ...getProduct,
-                    receiver: e.target.value,
+                    index: e.target.value,
                   })}
                 />
               </div>
@@ -77,7 +77,7 @@ export default({ startModal, setStartModal, startShipment }) => {
                 className="block w-full mt-3 py-3 px-4 font-medium text-sm text-center
                   text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700
                   rounded-lg ring-offset- 2 ring-indigo-600 focus:ring-2">
-                Get details
+                Start Shipment
               </button>
 
             </form>

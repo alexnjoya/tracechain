@@ -123,23 +123,26 @@ export const TrackingProvider = ({ children }) => {
 
   const getShipment = async (index) => {
     console.log(index * 1);
+   
     try {
       if (!window.ethereum) return "install MetaMask";
       const account  = await window.ethereum.request({
         method: "eth_accounts",
       });
 
-      const provider = new ethers.providers.JsonRpcProvider();
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
       const contract = fetchContract(provider);
       const shipment = await contract.getShipment(account[0], index * 1);
-
+      // console.log("Shipment", shipment);
       const singleShipment = {
         sender: shipment[0],
         receiver: shipment[1],
-        pickupTimeout: shipment[2].toNumber(),
-        deliveryTimeout: shipment[3].toNumber(),
+        pickupTime: shipment[2].toNumber(),
+        deliveryTime: shipment[3].toNumber(),
         distance: shipment[4].toNumber(),
-        price: ethers.utils.formatEther(shipment.price.toString()),
+        price: ethers.utils.formatEther(shipment[5].toString()),
         status: shipment[6],
         isPaid: shipment[7],
       };
@@ -164,11 +167,14 @@ export const TrackingProvider = ({ children }) => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
       const contract = fetchContract(signer);
-      console.log("Account", account[0], receiver, index)
+      
       const shipment = await contract.startShipment(
         account[0],
         receiver,
-        index*1
+        index,
+        {
+          gasLimit: 300000,
+        }
       );
 
       shipment.wait();
