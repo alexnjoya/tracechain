@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 // internal import
 
 import tracking from "../Conetxt/Tracking.json"
-const ContractAdddress = "0x1E4032dd41Ce197E18d0ACc35B6641009c23dFfD";
+const ContractAdddress ="0x19484342EdaeF2F84cB3278c1508bd649D9461FC";
 const ContractABI = tracking.abi;
 
 // fetching the smart contract
@@ -23,7 +23,7 @@ export const TrackingProvider = ({ children }) => {
 
   const createShipment = async (items) => {
     console.log(items);
-    const { reciever, pickupTime, distance, price } = items;
+    const { receiver, pickupTime, distance, price } = items;
 
     try {
       const web3Modal = new Web3Modal();
@@ -32,7 +32,7 @@ export const TrackingProvider = ({ children }) => {
       const signer = provider.getSigner();
       const contract = fetchContract(signer);
       const creatItem = await contract.createShipment(
-        reciever,
+        receiver,
         new Date(pickupTime).getTime(),
         distance,
         ethers.utils.parseUnits(price, 18),
@@ -50,13 +50,15 @@ export const TrackingProvider = ({ children }) => {
 
   const getAllShipment = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider();
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
       const contract = fetchContract(provider);
 
      const shipments = await contract.getAllTransactions();
       const allShipments = shipments.map((shipment) => ({
         sender: shipment.sender,
-        reciever: shipment.reciever,
+        receiver: shipment.receiver,
         price: ethers.utils.formatEther(shipment.price.toString()),
         pickupTime: shipment.pickupTime.toNumber(),
         deliveryTime: shipment.deliveryTime.toNumber(),
@@ -87,9 +89,9 @@ export const TrackingProvider = ({ children }) => {
   };
 
   const completeShipment = async (completeShip) => {
-    console.log(completeShip);
+    console.log("CompleteShip", completeShip);
 
-    const { reciever, index } = completeShip;
+    const { receiver, index } = completeShip;
     try {
       if (!window.ethereum) return "Install MetaMask";
 
@@ -101,10 +103,11 @@ export const TrackingProvider = ({ children }) => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
       const contract = fetchContract(signer);
+      // console.log("Account", account[0], receiver, index)
 
       const transaction = await contract.completeShipment(
         account[0],
-        reciever,
+        receiver,
         index,
         {
           gasLimit: 300000,
@@ -132,11 +135,11 @@ export const TrackingProvider = ({ children }) => {
 
       const singleShipment = {
         sender: shipment[0],
-        reciever: shipment[1],
+        receiver: shipment[1],
         pickupTimeout: shipment[2].toNumber(),
         deliveryTimeout: shipment[3].toNumber(),
         distance: shipment[4].toNumber(),
-        price: ethers.utils.formatEther(shipment[5].toString()),
+        price: ethers.utils.formatEther(shipment.price.toString()),
         status: shipment[6],
         isPaid: shipment[7],
       };
@@ -147,12 +150,13 @@ export const TrackingProvider = ({ children }) => {
   };
 
   const startShipment = async (getProduct) => {
-    const { reciever, index } = getProduct;
+   console.log("getProduct", getProduct);
+    const {receiver, index} = getProduct;
 
     try {
       if (!window.ethereum) return "Install MetaMask";
       const account = await window.ethereum.request({
-        method: "eth_accounts",
+        method:"eth_accounts",
       });
 
       const web3Modal = new Web3Modal();
@@ -160,10 +164,11 @@ export const TrackingProvider = ({ children }) => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
       const contract = fetchContract(signer);
+      console.log("Account", account[0], receiver, index)
       const shipment = await contract.startShipment(
         account[0],
-        reciever,
-        index * 1
+        receiver,
+        index*1
       );
 
       shipment.wait();

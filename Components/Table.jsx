@@ -1,5 +1,6 @@
 export default ({ setCreateShipmentModel, allShipmentsdata }) => {
   const converTime = (time) => {
+    console.log( "Time:", time)
     const newTime = new Date(time);
     const dataTime = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -39,8 +40,8 @@ export default ({ setCreateShipmentModel, allShipmentsdata }) => {
         <table className="w-full table auto text-sm text-left">
           <thead className="bg-gray-50 text-gray-600 font-medium border-b">
             <tr>
-              <th className=" py-3 px-6">Sender </th>
-              <th className=" py-3 px-6">Reciever </th>
+              <th className=" py-3 px-6">Sender</th>
+              <th className=" py-3 px-6">Receiver</th>
               <th className=" py-3 px-6">PickUpTime</th>
               <th className=" py-3 px-6">Distance </th>
               <th className=" py-3 px-6">Price</th>
@@ -56,10 +57,10 @@ export default ({ setCreateShipmentModel, allShipmentsdata }) => {
                   {shipment.sender.slice(0, 15)}...
                 </td>
                 <td className="px-6 py-4 whitespace-nowWrap">
-                  {shipment.reciever.slice(0, 15)}...
+                  {shipment.receiver.slice(0, 15)}...
                 </td>
                 <td className="px-6 py-4 whitespace-noWrap">
-                  {converTime(shipment.pickUpTime)}
+                  {converTime(shipment.pickupTime)}
                 </td>
                 <td className="px-6 py-4 whitespace-noWrap">
                   {shipment.distance} Km

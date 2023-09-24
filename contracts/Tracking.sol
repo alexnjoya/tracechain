@@ -1,4 +1,4 @@
-// SPX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Tracking {
@@ -10,7 +10,7 @@ contract Tracking {
     // declaration of variable used
     struct Shipment {
         address sender;
-        address reciever;
+        address receiver;
         uint256 pickupTime;
         uint256 deliveryTime;
         uint256 distance;
@@ -24,7 +24,7 @@ contract Tracking {
 
     struct TyepShipment {
         address sender;
-        address reciever;
+        address receiver;
         uint256 pickupTime;
         uint256 deliveryTime;
         uint256 distance;
@@ -37,24 +37,24 @@ contract Tracking {
 
     event ShipmentCreated(
         address indexed sender,
-        address indexed reciever,
+        address indexed receiver,
         uint256 pickupTime,
         uint256 distance,
         uint256 price
     );
     event ShipmentInTransit(
         address indexed sender,
-        address indexed reciever,
+        address indexed receiver,
         uint256 pickupTime
     );
     event ShipmentDelivered(
         address indexed sender,
-        address indexed reciever,
+        address indexed receiver,
         uint256 deliveryTime
     );
     event ShipmentPaid(
         address indexed sender,
-        address indexed reciever,
+        address indexed receiver,
         uint256 amount
     );
 
@@ -64,7 +64,7 @@ contract Tracking {
 
     //  users creating their shipment
     function createShipment(
-        address _reciever,
+        address _receiver,
         uint256 _pickupTime,
         uint256 _distance,
         uint256 _price
@@ -73,7 +73,7 @@ contract Tracking {
 
         Shipment memory shipment = Shipment(
             msg.sender,
-            _reciever,
+            _receiver,
             _pickupTime,
             0,
             _distance,
@@ -88,7 +88,7 @@ contract Tracking {
         tyepShipments.push(
             TyepShipment(
                 msg.sender,
-                _reciever,
+                _receiver,
                 _pickupTime,
                 0,
                 _distance,
@@ -100,7 +100,7 @@ contract Tracking {
 
         emit ShipmentCreated(
             msg.sender,
-            _reciever,
+            _receiver,
             _pickupTime,
             _distance,
             _price
@@ -110,13 +110,13 @@ contract Tracking {
     // shiping company start their shipping  company
     function startShipment(
         address _sender,
-        address _reciever,
+        address _receiver,
         uint256 _index
     ) public {
         Shipment storage shipment = shipments[_sender][_index];
         TyepShipment storage tyepShipment = tyepShipments[_index];
 
-        require(shipment.reciever == _reciever, "Invalid reciever.");
+        require(shipment.receiver == _receiver, "Invalid receiver.");
         require(
             shipment.status == ShipmentStatus.PENDING,
             "Shipment already in transit."
@@ -124,19 +124,19 @@ contract Tracking {
 
         shipment.status = ShipmentStatus.IN_TRANSIT;
         tyepShipment.status = ShipmentStatus.IN_TRANSIT;
-        emit ShipmentInTransit(_sender, _reciever, shipment.pickupTime);
+        emit ShipmentInTransit(_sender, _receiver, shipment.pickupTime);
     }
 
     // shipping is completed
     function completeShipment(
         address _sender,
-        address _reciever,
+        address _receiver,
         uint256 _index
     ) public payable {
         Shipment storage shipment = shipments[_sender][_index];
         TyepShipment storage tyepShipment = tyepShipments[_index];
 
-        require(shipment.reciever == _reciever, "Invalid reciever.");
+        require(shipment.receiver == _receiver, "Invalid receiver.");
         require(
             shipment.status == ShipmentStatus.IN_TRANSIT,
             "Shipment ot in transit."
@@ -150,13 +150,13 @@ contract Tracking {
 
         uint256 amount = shipment.price;
 
-        payable(_reciever).transfer(amount);
+        payable(_receiver).transfer(amount);
 
         shipment.isPaid = true;
         tyepShipment.isPaid = true;
 
-        emit ShipmentDelivered(_sender, _reciever, shipment.deliveryTime);
-        emit ShipmentPaid(_sender, _reciever, amount);
+        emit ShipmentDelivered(_sender, _receiver, shipment.deliveryTime);
+        emit ShipmentPaid(_sender, _receiver, amount);
     }
 
     // here the end user get their items delivered
@@ -180,7 +180,7 @@ contract Tracking {
         Shipment memory shipment = shipments[_sender][_index];
         return (
             shipment.sender,
-            shipment.reciever,
+            shipment.receiver,
             shipment.pickupTime,
             shipment.deliveryTime,
             shipment.distance,

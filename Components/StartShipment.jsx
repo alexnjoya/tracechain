@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default({ startModal, setStartModal, startShipment }) => {
   const [getProduct, setGetProduct] = useState({
-    reveiver: "",
+    receiver: "",
     index: "",
   });
 
@@ -54,7 +54,7 @@ export default({ startModal, setStartModal, startShipment }) => {
                   outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                   onChange={(e) => setGetProduct({
                     ...getProduct,
-                    reveiver: e.target.value,
+                    receiver: e.target.value,
                   })}
                 />
               </div>
@@ -67,7 +67,7 @@ export default({ startModal, setStartModal, startShipment }) => {
                   outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                   onChange={(e) => setGetProduct({
                     ...getProduct,
-                    reveiver: e.target.value,
+                    receiver: e.target.value,
                   })}
                 />
               </div>

@@ -6,7 +6,7 @@ export default ({
   createShipment,
 }) => {
   const [shipment, setShipment] = useState({
-    reciever: "",
+    receiver: "",
     pickupTime: "",
     distance: "",
     price: "",
@@ -62,12 +62,12 @@ export default ({
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="relative mt-3">
                 <input type="text"
-                  placeholder="reciever "
+                  placeholder="receiver "
                   className="w-full pl-5 pr-3 py-2 text-gray-500 bg-transparent
            outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                   onChange={(e) => setShipment({
                     ...shipment,
-                    reciever: e.target.value,
+                    receiver: e.target.value,
                   })
                   }
                 />
