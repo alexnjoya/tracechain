@@ -5,7 +5,7 @@ async function main() {
   const tracking = await Tracking.deploy();
 
   await tracking.deployed();
-  
+
   console.log(`Tracking deployed to ${tracking.address}`);
 }
 

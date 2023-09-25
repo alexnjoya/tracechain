@@ -29,6 +29,7 @@
     "@types/mocha": "^10.0.1",
     "autoprefixer": "^10.4.14",
     "chai": "^4.2.0",
+    "cssnano": "^6.0.1",
     "hardhat-gas-reporter": "^1.0.8",
     "postcss": "^8.4.21",
     "solidity-coverage": "^0.8.1",
